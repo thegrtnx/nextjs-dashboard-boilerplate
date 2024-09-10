@@ -9,13 +9,27 @@ export function AuthLayoutView({ children }: { children: React.ReactNode }) {
 	const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
 	useEffect(() => {
-		// Clear all tokens (cookies) when the layout is rendered
-		Cookies.remove("token");
+		// Function to clear all cookies
+		const clearAllCookies = () => {
+			document.cookie.split(";").forEach((cookie) => {
+				const cookieName = cookie.split("=")[0].trim();
+				const options = {
+					path: "/",
+					domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || window.location.hostname,
+				};
 
-		// If you have other tokens or cookies to clear, list them here
-		// Example:
-		// Cookies.remove("otherCookie");
+				// Remove non-secure cookies
+				Cookies.remove(cookieName, options);
+
+				// Remove secure cookies
+				Cookies.remove(cookieName, { ...options, secure: true });
+			});
+		};
+
+		// Clear all cookies on component mount
+		clearAllCookies();
 	}, []);
+
 	return (
 		<div className="flex min-h-screen w-full flex-col">
 			<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
