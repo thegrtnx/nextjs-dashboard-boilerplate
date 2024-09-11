@@ -9,7 +9,7 @@ import { Menu, CircleUser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Image, Input } from "@nextui-org/react";
 import NextTopLoader from "nextjs-toploader";
-import DynamicBreadcrumb from "./breadcumb"; // Import the dynamic breadcrumb component
+//import DynamicBreadcrumb from "./breadcumb"; // Import the dynamic breadcrumb component
 
 export function DashboardLayoutView({ children }: { children: React.ReactNode }) {
 	const appName = process.env.NEXT_PUBLIC_APP_NAME;
@@ -28,7 +28,7 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 		return pathname === href ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground";
 	};
 
-	const isDashboard = pathname === "/dashboard"; // Exclude breadcrumb on the dashboard route
+	//const isDashboard = pathname === "/dashboard"; // Exclude breadcrumb on the dashboard route
 
 	return (
 		<div className="flex min-h-screen w-full flex-col">
@@ -146,7 +146,7 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 								Orders
 							</Link>
 							<Link
-								href="/products"
+								href="/dashboard/product/catalogue"
 								className={getLinkClassName("/products")}>
 								Products
 							</Link>
@@ -197,7 +197,7 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 				</div>
 			</header>
 
-			<main className="flex flex-grow flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+			<main className="flex flex-grow flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8 mb-20">
 				<NextTopLoader
 					crawl={true}
 					color={appColor}
@@ -206,8 +206,7 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 					zIndex={1600}
 				/>
 
-				{/* Conditionally render breadcrumb if not on the dashboard page */}
-				{!isDashboard && <DynamicBreadcrumb />}
+				
 				{children}
 			</main>
 			<footer className="fixed bottom-0 bg-background border-t p-4 text-center w-full z-50">

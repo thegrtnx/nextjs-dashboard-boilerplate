@@ -1,7 +1,12 @@
 import React from "react";
+import DynamicBreadcrumb from "../breadcumb";
 
 const CatalogueView = () => {
-	return <div>CatalogueView</div>;
+	return (
+		<>
+			<DynamicBreadcrumb pageName="Product Catalogue" />
+		</>
+	);
 };
 
 export default CatalogueView;

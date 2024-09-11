@@ -7,7 +7,11 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbS
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function DynamicBreadcrumb() {
+interface DynamicBreadcrumbProps {
+	pageName: string; // Pass the page name dynamically
+}
+
+export default function DynamicBreadcrumb({ pageName }: DynamicBreadcrumbProps) {
 	const pathname = usePathname();
 
 	// Split the pathname into an array of segments
@@ -18,7 +22,7 @@ export default function DynamicBreadcrumb() {
 		return pathSegments.map((segment, index) => {
 			const href = "/" + pathSegments.slice(0, index + 1).join("/");
 
-			// If it's the last segment, render it as a plain text, not as a link
+			// If it's the last segment, render it as plain text, not as a link
 			const isLast = index === pathSegments.length - 1;
 
 			return (
@@ -39,8 +43,14 @@ export default function DynamicBreadcrumb() {
 	};
 
 	return (
-		<Breadcrumb className="hidden md:flex">
-			<BreadcrumbList>{createBreadcrumb()}</BreadcrumbList>
-		</Breadcrumb>
+		<div className="flex flex-col md:flex-row items-start justify-between md:items-center mb-4">
+			{/* Page Name on the left */}
+			<h1 className="text-2xl font-bold mb-2 md:mb-0">{pageName}</h1>
+
+			{/* Breadcrumb on the right (moves under the page name on mobile) */}
+			<Breadcrumb className="flex">
+				<BreadcrumbList>{createBreadcrumb()}</BreadcrumbList>
+			</Breadcrumb>
+		</div>
 	);
 }
