@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -8,21 +8,32 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Menu, CircleUser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Image, Input } from "@nextui-org/react";
+import NextTopLoader from "nextjs-toploader";
+import DynamicBreadcrumb from "./breadcumb"; // Import the dynamic breadcrumb component
 
 export function DashboardLayoutView({ children }: { children: React.ReactNode }) {
 	const appName = process.env.NEXT_PUBLIC_APP_NAME;
+	const appColor = process.env.NEXT_PUBLIC_APP_COLOR;
 	const pathname = usePathname();
 
-	const getLinkClassName = (href: any) => {
-		return pathname === href
-			? "text-foreground font-bold" // Active link styles
-			: "text-muted-foreground hover:text-foreground"; // Inactive link styles
+	const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+	const closeDropdown = () => setDropdownOpen(false);
+
+	const getLinkClassName = (href: string) => {
+		if (href === "/dashboard/products" || href === "/dashboard/product") {
+			return pathname.startsWith("/dashboard/product") ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground";
+		}
+
+		return pathname === href ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground";
 	};
+
+	const isDashboard = pathname === "/dashboard"; // Exclude breadcrumb on the dashboard route
 
 	return (
 		<div className="flex min-h-screen w-full flex-col">
 			<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
-				<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+				<nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-8">
 					<Link
 						href="/dashboard"
 						className="flex items-center gap-2 me-12 text-lg font-semibold md:text-base">
@@ -39,24 +50,65 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 						className={getLinkClassName("/dashboard")}>
 						Dashboard
 					</Link>
-					<Link
-						href="/dashboard/orders"
-						className={getLinkClassName("/orders")}>
-						Orders
-					</Link>
-					<Link
-						href="/dashboard/products"
-						className={getLinkClassName("/products")}>
-						Products
-					</Link>
+					<DropdownMenu
+						open={isDropdownOpen}
+						onOpenChange={setDropdownOpen}>
+						<DropdownMenuTrigger asChild>
+							<Link
+								href="#"
+								className={`${getLinkClassName("/dashboard/products")}`}>
+								Products
+							</Link>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent
+							align="center"
+							className="p-2">
+							<DropdownMenuItem
+								className="p-3"
+								onClick={closeDropdown}>
+								<Link
+									href="/dashboard/products"
+									className={getLinkClassName("/dashboard/products")}>
+									View products
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								className="p-3"
+								onClick={closeDropdown}>
+								<Link
+									href="/dashboard/add-products"
+									className={getLinkClassName("/dashboard/add-products")}>
+									Add a product
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								className="p-3"
+								onClick={closeDropdown}>
+								<Link
+									href="/dashboard/product/catalogue"
+									className={getLinkClassName("/dashboard/product/catalogue")}>
+									Products Catalogue
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								className="p-3"
+								onClick={closeDropdown}>
+								<Link
+									href="/dashboard/product/category"
+									className={getLinkClassName("/dashboard/product/category")}>
+									Products Category
+								</Link>
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
 					<Link
 						href="/dashboard/customers"
-						className={getLinkClassName("/customers")}>
+						className={getLinkClassName("/dashboard/customers")}>
 						Customers
 					</Link>
 					<Link
 						href="/dashboard/analytics"
-						className={getLinkClassName("/analytics")}>
+						className={getLinkClassName("/dashboard/analytics")}>
 						Analytics
 					</Link>
 				</nav>
@@ -137,12 +189,27 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 							<DropdownMenuItem>Settings</DropdownMenuItem>
 							<DropdownMenuItem>Support</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>Logout</DropdownMenuItem>
+							<DropdownMenuItem>
+								<Link href="/auth/sign-up">Logout</Link>
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
 			</header>
-			<main className="flex flex-grow flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">{children}</main>
+
+			<main className="flex flex-grow flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+				<NextTopLoader
+					crawl={true}
+					color={appColor}
+					showSpinner={true}
+					easing="ease"
+					zIndex={1600}
+				/>
+
+				{/* Conditionally render breadcrumb if not on the dashboard page */}
+				{!isDashboard && <DynamicBreadcrumb />}
+				{children}
+			</main>
 			<footer className="fixed bottom-0 bg-background border-t p-4 text-center w-full z-50">
 				<div className="flex justify-between m-auto items-center gap-5">
 					<p className="text-xs">

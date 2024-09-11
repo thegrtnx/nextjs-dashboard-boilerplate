@@ -11,5 +11,9 @@ import ProtectedRoute from "./hoc";
 
 //dashboard views
 import { DashboardLayoutView } from "./dashboard/dashboardLayoutView";
+import HomeView from "./dashboard/homeView";
 
-export { SignupView, VerifyView, SigninView, ForgotView, ResetPasswordView, AuthLayoutView, DashboardLayoutView, ProtectedRoute };
+//products
+import CatalogueView from "./dashboard/product/catalogueView";
+
+export { SignupView, VerifyView, SigninView, ForgotView, ResetPasswordView, AuthLayoutView, DashboardLayoutView, ProtectedRoute, HomeView, CatalogueView };
