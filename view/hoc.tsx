@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 		// Async code should be wrapped in an IIFE or use .then() and .catch()
 		(async () => {
 			try {
-				const userProfile = await getUserProfile(token, { cache: "force-cache", revalidate: 5 });
+				const userProfile = await getUserProfile(token, { cache: "no-store", revalidate: 0 });
 
 				router.prefetch("/dashboard/*");
 
