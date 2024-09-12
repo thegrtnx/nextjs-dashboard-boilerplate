@@ -16,4 +16,7 @@ import HomeView from "./dashboard/homeView";
 //products
 import CatalogueView from "./dashboard/product/catalogueView";
 
-export { SignupView, VerifyView, SigninView, ForgotView, ResetPasswordView, AuthLayoutView, DashboardLayoutView, ProtectedRoute, HomeView, CatalogueView };
+//skeletons
+import TableSkeleton01 from "./skeletons/tableSkeletons01";
+
+export { SignupView, VerifyView, SigninView, ForgotView, ResetPasswordView, AuthLayoutView, DashboardLayoutView, ProtectedRoute, HomeView, CatalogueView, TableSkeleton01 };

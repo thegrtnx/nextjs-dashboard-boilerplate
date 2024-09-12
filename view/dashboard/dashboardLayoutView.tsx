@@ -9,7 +9,6 @@ import { Menu, CircleUser } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Image, Input } from "@nextui-org/react";
 import NextTopLoader from "nextjs-toploader";
-//import DynamicBreadcrumb from "./breadcumb"; // Import the dynamic breadcrumb component
 
 export function DashboardLayoutView({ children }: { children: React.ReactNode }) {
 	const appName = process.env.NEXT_PUBLIC_APP_NAME;
@@ -27,8 +26,6 @@ export function DashboardLayoutView({ children }: { children: React.ReactNode })
 
 		return pathname === href ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground";
 	};
-
-	//const isDashboard = pathname === "/dashboard"; // Exclude breadcrumb on the dashboard route
 
 	return (
 		<div className="flex min-h-screen w-full flex-col">

@@ -17,11 +17,16 @@ async function apiCall(endpoint: string, method: string, body?: any, token?: str
 			headers.Authorization = `Bearer ${token}`;
 		}
 
+		// Define fetch options
 		const fetchOptions: RequestInit = {
 			method,
 			headers,
-			body: body ? JSON.stringify(body) : null,
 		};
+
+		// Only add body if the method is not GET or HEAD
+		if (method !== "GET" && method !== "HEAD" && body) {
+			fetchOptions.body = JSON.stringify(body);
+		}
 
 		// Apply caching and revalidation strategies for GET requests
 		if (method === "GET") {
@@ -34,7 +39,6 @@ async function apiCall(endpoint: string, method: string, body?: any, token?: str
 		}
 
 		const response = await fetch(`${apiUrl}${endpoint}`, fetchOptions);
-
 		const data = await response.json();
 
 		if (!response.ok) {
@@ -48,6 +52,7 @@ async function apiCall(endpoint: string, method: string, body?: any, token?: str
 	}
 }
 
+//AUTH Functions
 export async function signupCall(signupDetails: any) {
 	return apiCall("/auth/signup", "POST", signupDetails);
 }
@@ -68,6 +73,13 @@ export async function signinCall(signinDetails: any) {
 	return apiCall("/auth/signin", "POST", signinDetails);
 }
 
+//Profile Functions
+
 export async function getUserProfile(token?: string, options?: ApiCallOptions) {
 	return apiCall("/user/profile", "GET", undefined, token, options);
+}
+
+//Product Functions
+export async function getAllProductCatalog(options?: ApiCallOptions) {
+	return apiCall("/product-catalog", "GET", options);
 }

@@ -13,16 +13,22 @@ export function AuthLayoutView({ children }: { children: React.ReactNode }) {
 		const clearAllCookies = () => {
 			document.cookie.split(";").forEach((cookie) => {
 				const cookieName = cookie.split("=")[0].trim();
-				const options = {
+
+				// Remove the cookie for all paths and domains
+				Cookies.remove(cookieName, { path: "/" });
+				Cookies.remove(cookieName, {
 					path: "/",
 					domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || window.location.hostname,
-				};
-
-				// Remove non-secure cookies
-				Cookies.remove(cookieName, options);
-
-				// Remove secure cookies
-				Cookies.remove(cookieName, { ...options, secure: true });
+				});
+				Cookies.remove(cookieName, {
+					path: "/",
+					secure: true,
+				});
+				Cookies.remove(cookieName, {
+					path: "/",
+					domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || window.location.hostname,
+					secure: true,
+				});
 			});
 		};
 
@@ -51,7 +57,7 @@ export function AuthLayoutView({ children }: { children: React.ReactNode }) {
 					<p className="text-xs">
 						© {appName} {new Date().getFullYear()}.
 					</p>
-					<p className="text-xs  animate-pulse">
+					<p className="text-xs animate-pulse">
 						Powered by:{" "}
 						<Link href="#">
 							<b>Hynitr</b>
